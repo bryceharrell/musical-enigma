@@ -39,6 +39,42 @@ document.addEventListener('musickitloaded', () => {
     });
 
     var allSongs = [];
+    fetchAllSongs(allSongs, 2000);
+    
+
+    
+
+    function resolveAfter4Seconds() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve();
+        }, 4000);
+      });
+    }
+
+    async function sortFunc() {
+      await resolveAfter4Seconds();
+      srt();
+    }
+    console.log(allSongs);
+    sortFunc();
+    
+
+
+    function srt() {
+    allSongs.sort(function(a, b) {
+      if (a[0].attributes.name.toUpperCase() < b[0].attributes.name.toUpperCase()) {
+        return -1;
+      } else if (a[0].attributes.name.toUpperCase() > b[0].attributes.name.toUpperCase()){
+        return 1;
+      }
+      return 0;
+      
+    });
+    console.log(allSongs);
+  }
+   
+
 
     //Grabs songQuantity amount of songs from library and adds them to allSongs[] in nested arrays
     function fetchAllSongs(arrayToAddTo, songQuantity) {
@@ -55,11 +91,7 @@ document.addEventListener('musickitloaded', () => {
       }
     }
 
-    document.getElementById('fetch-all-songs').addEventListener('click', () => {
-      fetchAllSongs(allSongs, 2000);
-      setTimeout(placeholder(), 5000);
-      console.log(allSongs);
-    });
+    
 
     document.getElementById('song-fetch-by-year').addEventListener('click', () => {
       const dateInput = document.getElementById('date-input');
@@ -85,8 +117,8 @@ document.addEventListener('musickitloaded', () => {
               const h1 = document.createElement('h1');
               h1.textContent = element.attributes.name + " by " + element.attributes.artistName;
 
-              //const h3 = document.createElement('h3');
-              //h3.textContent = "By: " + element.attributes.artistName;
+              const h3 = document.createElement('h3');
+              h3.textContent = "Released on: " + element.attributes.releaseDate;
 
               container.appendChild(card);
 
@@ -96,7 +128,7 @@ document.addEventListener('musickitloaded', () => {
               albumCover.src = element.attributes.artwork.url.replace('{w}x{h}', '150x150');
 
               card.appendChild(h1);
-              //card.appendChild(h3);
+              card.appendChild(h3);
               card.appendChild(albumCover);
 
 
